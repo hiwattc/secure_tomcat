@@ -1,8 +1,8 @@
 #2023.03.11
 
 ################## EVN VAR #################
-VERSION=9.0.24
-#VERSION=9.0.73
+#VERSION=9.0.24
+VERSION=9.0.73
 FILENAME=apache-tomcat-$VERSION.tar.gz
 DIRNAME=apache-tomcat-$VERSION
 
