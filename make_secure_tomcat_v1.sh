@@ -48,6 +48,9 @@ rm -Rf ./$DIRNAME/webapps/examples
 rm -Rf ./$DIRNAME/webapps/host-manager
 rm -Rf ./$DIRNAME/webapps/manager
 
+################## ADD SCRIPT #################
+echo "tail -f ../logs/catalina.out" > ./$DIRNAME/bin/log.sh
+chmod u+x ./$DIRNAME/bin/log.sh
 
 ################## CHECK IF AJP ACTIVE #################
 echo "AJP(8009) active check"
@@ -60,9 +63,11 @@ else
     echo "AJP PORT INACTIVE"
 fi
 
-cp ./$DIRNAME/conf/server.xml ./$DIRNAME/conf/server.xml.orig
-cat ./$DIRNAME/conf/server.xml|sed -e '/<Connector.*HTTP/,/>/s/\/>/Server="HTOM" \/>/' > ./$DIRNAME/conf/server.xml
-cat ./$DIRNAME/conf/server.xml|sed -e '/<Connector.*HTTP/,/>/s/8080/38080/' > ./$DIRNAME/conf/server.xml
+mv ./$DIRNAME/conf/server.xml ./$DIRNAME/conf/server.xml.orig
+cat ./$DIRNAME/conf/server.xml.orig|sed -e '/<Connector.*HTTP/,/>/s/\/>/Server="HTOM" \/>/' > ./$DIRNAME/conf/server.xml.1
+cat ./$DIRNAME/conf/server.xml.1|sed -e '/<Connector.*HTTP/,/>/s/8080/38080/' > ./$DIRNAME/conf/server.xml.2
+cat ./$DIRNAME/conf/server.xml.2|sed -e '/<Host/,/<\/Host>/s/<\/Host>/<Valve className="org.apache.catalina.valves.ErrorReportValve" showReport="false" showServerInfo="false"\/><\/Host>/' > ./$DIRNAME/conf/server.xml
+
 ################## CHECK RESULT #################
 ls -ltr
 du -sm ./*
